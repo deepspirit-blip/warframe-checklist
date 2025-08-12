@@ -1,9 +1,11 @@
-const CACHE_NAME = 'warframe-checklist-v1';
+const CACHE_NAME = 'warframe-v1';
 const ASSETS = [
   '/',
   '/index.html',
-  '/styles.css',  // If you split CSS later
-  '/script.js'    // If you split JS later
+  '/manifest.json',
+  '/favicon.ico',
+  '/icons/icon-192.png',
+  '/icons/icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {

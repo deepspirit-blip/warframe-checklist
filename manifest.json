@@ -1,19 +1,19 @@
 {
   "name": "Warframe Daily Checklist",
   "short_name": "WF Checklist",
-  "description": "Track your daily and weekly Warframe tasks",
+  "description": "Track your daily Warframe tasks",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1a1a2e",
   "theme_color": "#00d4ff",
+  "background_color": "#1a1a2e",
   "icons": [
     {
-      "src": "icons/icon-192.png",
+      "src": "/icons/icon-192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "icons/icon-512.png",
+      "src": "/icons/icon-512.png",
       "type": "image/png",
       "sizes": "512x512"
     }

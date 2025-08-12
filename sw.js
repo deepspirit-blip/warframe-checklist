@@ -1,23 +1,25 @@
-const CACHE_NAME = 'warframe-v1';
+// sw.js - place in your root directory
+const CACHE_NAME = 'warframe-v2';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/favicon.ico',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png'
+  '/Warframe-Daily-Checklist/',
+  '/Warframe-Daily-Checklist/index.html',
+  '/Warframe-Daily-Checklist/manifest.json',
+  '/Warframe-Daily-Checklist/css/styles.css',
+  '/Warframe-Daily-Checklist/js/app.js',
+  '/Warframe-Daily-Checklist/icons/icon-192.png',
+  '/Warframe-Daily-Checklist/icons/icon-512.png'
 ];
 
-self.addEventListener('install', (event) => {
-  event.waitUntil(
+self.addEventListener('install', (e) => {
+  e.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(ASSETS))
   );
 });
 
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => response || fetch(event.request))
+self.addEventListener('fetch', (e) => {
+  e.respondWith(
+    caches.match(e.request)
+      .then(res => res || fetch(e.request))
   );
 });

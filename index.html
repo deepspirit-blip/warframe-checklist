@@ -315,32 +315,11 @@
                 </ul>
             </div>
 
+            <!-- Syndicates & Open World (Combined Section) -->
             <div class="section priority-medium">
-                <h2><span class="section-icon">🌍</span>Open World</h2>
-                <ul class="task-list" id="openworld-tasks">
-                    <li class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="cetus-standing">
-                        <label for="cetus-standing" class="task-label">Cetus (Ostron/Quills)</label>
-                    </li>
-                    <li class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="fortuna-standing">
-                        <label for="fortuna-standing" class="task-label">Fortuna (Solaris/Vox)</label>
-                    </li>
-                    <li class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="deimos-standing">
-                        <label for="deimos-standing" class="task-label">Deimos (Entrati/Necraloid)</label>
-                    </li>
-                    <li class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="zariman-standing">
-                        <label for="zariman-standing" class="task-label">Zariman (Holdfasts)</label>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- NEW SYNDICATES SECTION -->
-            <div class="section priority-medium">
-                <h2><span class="section-icon">🏛️</span>Syndicates</h2>
+                <h2><span class="section-icon">🏛️</span>Syndicates & Open World</h2>
                 <ul class="task-list" id="syndicate-tasks">
+                    <!-- World Syndicates -->
                     <li class="task-item">
                         <input type="checkbox" class="task-checkbox" id="world-syndicates">
                         <label for="world-syndicates" class="task-label">World Syndicates (Standing)</label>
@@ -349,6 +328,8 @@
                         <input type="checkbox" class="task-checkbox" id="cephalon-simaris">
                         <label for="cephalon-simaris" class="task-label">Cephalon Simaris (Relay)</label>
                     </li>
+                    
+                    <!-- Cetus -->
                     <li class="task-item">
                         <input type="checkbox" class="task-checkbox" id="ostron">
                         <label for="ostron" class="task-label">Ostron (Cetus)</label>
@@ -357,6 +338,8 @@
                         <input type="checkbox" class="task-checkbox" id="quills">
                         <label for="quills" class="task-label">The Quills (Cetus)</label>
                     </li>
+                    
+                    <!-- Fortuna -->
                     <li class="task-item">
                         <input type="checkbox" class="task-checkbox" id="solaris-united">
                         <label for="solaris-united" class="task-label">Solaris United (Fortuna)</label>
@@ -369,6 +352,8 @@
                         <input type="checkbox" class="task-checkbox" id="ventkids">
                         <label for="ventkids" class="task-label">Ventkids (Fortuna)</label>
                     </li>
+                    
+                    <!-- Deimos -->
                     <li class="task-item">
                         <input type="checkbox" class="task-checkbox" id="entrati">
                         <label for="entrati" class="task-label">Entrati (Necralisk)</label>
@@ -377,10 +362,14 @@
                         <input type="checkbox" class="task-checkbox" id="necraloid">
                         <label for="necraloid" class="task-label">Necraloid (Necralisk)</label>
                     </li>
+                    
+                    <!-- Zariman -->
                     <li class="task-item">
                         <input type="checkbox" class="task-checkbox" id="holdfasts">
                         <label for="holdfasts" class="task-label">The Holdfasts (Chrysalith)</label>
                     </li>
+                    
+                    <!-- Other -->
                     <li class="task-item">
                         <input type="checkbox" class="task-checkbox" id="cavia">
                         <label for="cavia" class="task-label">Cavia (Sanctum Anatomica)</label>
@@ -549,7 +538,12 @@
         // Task management
         function updateProgress() {
             const allTasks = document.querySelectorAll('.task-checkbox');
-            const dailyTasks = document.querySelectorAll('#essential-tasks .task-checkbox, #combat-tasks .task-checkbox, #openworld-tasks .task-checkbox, #syndicate-tasks .task-checkbox, #resource-tasks .task-checkbox');
+            const dailyTasks = document.querySelectorAll(
+                '#essential-tasks .task-checkbox, ' +
+                '#combat-tasks .task-checkbox, ' +
+                '#syndicate-tasks .task-checkbox, ' + 
+                '#resource-tasks .task-checkbox'
+            );
             const weeklyTasks = document.querySelectorAll('.weekly-column .task-checkbox');
             
             const completedDaily = Array.from(dailyTasks).filter(cb => cb.checked).length;

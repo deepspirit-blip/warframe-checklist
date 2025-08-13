@@ -8,10 +8,11 @@
     <meta name="description" content="Track your daily and weekly Warframe tasks">
     
     <!-- Favicon and PWA Assets -->
-   <link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.json">
     
     <style>
         * {
@@ -336,6 +337,61 @@
                 </ul>
             </div>
 
+            <!-- NEW SYNDICATES SECTION -->
+            <div class="section priority-medium">
+                <h2><span class="section-icon">🏛️</span>Syndicates</h2>
+                <ul class="task-list" id="syndicate-tasks">
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" id="world-syndicates">
+                        <label for="world-syndicates" class="task-label">World Syndicates (Standing)</label>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" id="cephalon-simaris">
+                        <label for="cephalon-simaris" class="task-label">Cephalon Simaris (Relay)</label>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" id="ostron">
+                        <label for="ostron" class="task-label">Ostron (Cetus)</label>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" id="quills">
+                        <label for="quills" class="task-label">The Quills (Cetus)</label>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" id="solaris-united">
+                        <label for="solaris-united" class="task-label">Solaris United (Fortuna)</label>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" id="vox-solaris">
+                        <label for="vox-solaris" class="task-label">Vox Solaris (Fortuna)</label>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" id="ventkids">
+                        <label for="ventkids" class="task-label">Ventkids (Fortuna)</label>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" id="entrati">
+                        <label for="entrati" class="task-label">Entrati (Necralisk)</label>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" id="necraloid">
+                        <label for="necraloid" class="task-label">Necraloid (Necralisk)</label>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" id="holdfasts">
+                        <label for="holdfasts" class="task-label">The Holdfasts (Chrysalith)</label>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" id="cavia">
+                        <label for="cavia" class="task-label">Cavia (Sanctum Anatomica)</label>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" id="hex">
+                        <label for="hex" class="task-label">The Hex (Höllvania Central Mall)</label>
+                    </li>
+                </ul>
+            </div>
+
             <div class="section priority-low">
                 <h2><span class="section-icon">🔧</span>Resources</h2>
                 <ul class="task-list" id="resource-tasks">
@@ -493,7 +549,7 @@
         // Task management
         function updateProgress() {
             const allTasks = document.querySelectorAll('.task-checkbox');
-            const dailyTasks = document.querySelectorAll('#essential-tasks .task-checkbox, #combat-tasks .task-checkbox, #openworld-tasks .task-checkbox, #resource-tasks .task-checkbox');
+            const dailyTasks = document.querySelectorAll('#essential-tasks .task-checkbox, #combat-tasks .task-checkbox, #openworld-tasks .task-checkbox, #syndicate-tasks .task-checkbox, #resource-tasks .task-checkbox');
             const weeklyTasks = document.querySelectorAll('.weekly-column .task-checkbox');
             
             const completedDaily = Array.from(dailyTasks).filter(cb => cb.checked).length;
@@ -569,12 +625,16 @@
 
         // Service Worker Registration
         if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/Warframe-Daily-Checklist/sw.js')
-      .then(reg => console.log('SW registered!', reg))
-      .catch(err => console.log('SW registration failed: ', err));
-  });
-}
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registered:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
     </script>
 </body>
 </html>

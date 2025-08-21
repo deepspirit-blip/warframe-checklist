@@ -765,23 +765,94 @@
     <script>
         class WarframeChecklist {
             constructor() {
-                this.gameState = {
+                this.gameState = this.loadGameState();
+                this.timerInterval = null;
+                this.init();
+            }
+
+            loadGameState() {
+                const savedState = localStorage.getItem('warframe-checklist');
+                const defaultState = {
                     tasks: {},
                     ignored: {},
                     counters: { duviri: 0, sp: 0, spTeshin: 0 },
                     streak: parseInt(sessionStorage.getItem('warframe-streak') || '0'),
                     lastCompleteDate: sessionStorage.getItem('warframe-last-complete')
                 };
-                
-                this.timerInterval = null;
-                this.init();
+
+                if (savedState) {
+                    try {
+                        const parsed = JSON.parse(savedState);
+                        return {
+                            ...defaultState,
+                            ...parsed,
+                            // Keep streak in sessionStorage for daily tracking
+                            streak: parseInt(sessionStorage.getItem('warframe-streak') || '0'),
+                            lastCompleteDate: sessionStorage.getItem('warframe-last-complete')
+                        };
+                    } catch (e) {
+                        console.warn('Failed to load saved state, using defaults');
+                        return defaultState;
+                    }
+                }
+                return defaultState;
+            }
+
+            saveGameState() {
+                const stateToSave = {
+                    tasks: this.gameState.tasks,
+                    ignored: this.gameState.ignored,
+                    counters: this.gameState.counters
+                };
+                localStorage.setItem('warframe-checklist', JSON.stringify(stateToSave));
             }
 
             init() {
+                this.restoreUIState();
                 this.updateTimers();
                 this.timerInterval = setInterval(() => this.updateTimers(), 60000);
                 this.bindEvents();
                 this.updateProgress();
+            }
+
+            restoreUIState() {
+                // Restore task checkboxes
+                Object.entries(this.gameState.tasks).forEach(([taskId, isChecked]) => {
+                    const checkbox = document.getElementById(taskId);
+                    if (checkbox) {
+                        checkbox.checked = isChecked;
+                        this.updateTaskAppearance(checkbox);
+                    }
+                });
+
+                // Restore ignored states
+                Object.entries(this.gameState.ignored).forEach(([taskId, isIgnored]) => {
+                    if (isIgnored) {
+                        const checkbox = document.getElementById(taskId);
+                        if (checkbox) {
+                            const taskItem = checkbox.closest('.task-item, .weekly-task-item');
+                            const ignoreBtn = taskItem.querySelector('.ignore-btn');
+                            
+                            taskItem.classList.add('ignored');
+                            ignoreBtn.classList.add('ignored');
+                        }
+                    }
+                });
+
+                // Restore counters
+                const counterElements = {
+                    duviri: 'duviri-count',
+                    sp: 'sp-count',
+                    spTeshin: 'sp-teshin-count'
+                };
+
+                Object.entries(counterElements).forEach(([key, elementId]) => {
+                    const value = this.gameState.counters[key] || 0;
+                    const element = document.getElementById(elementId);
+                    if (element) {
+                        element.textContent = value;
+                    }
+                });
             }
 
             updateTimers() {
@@ -916,6 +987,7 @@
                 taskItem.classList.toggle('ignored', this.gameState.ignored[taskId]);
                 ignoreBtn.classList.toggle('ignored', this.gameState.ignored[taskId]);
                 
+                this.saveGameState();
                 this.updateProgress();
             }
 
@@ -947,6 +1019,8 @@
                     this.updateTaskAppearance(checkbox);
                     this.updateProgress();
                 }
+
+                this.saveGameState();
             }
 
             autoCheckEssentials() {
@@ -988,6 +1062,7 @@
                         if (element) element.textContent = '0';
                     });
                     
+                    this.saveGameState();
                     this.updateProgress();
                 }
             }
@@ -998,6 +1073,7 @@
                         this.gameState.tasks[e.target.id] = e.target.checked;
                         this.updateTaskAppearance(e.target);
                         this.updateProgress();
+                        this.saveGameState();
                     }
                 });
                 
@@ -1081,4 +1157,3 @@ Feel free to submit issues and pull requests to improve this checklist for the W
 
 Created for Tenno, by Tenno 🌟
 -->
-                        

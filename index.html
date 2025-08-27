@@ -591,133 +591,12 @@
         
         <div class="tab-container">
             <div class="tab-nav">
-                <button class="tab-button active" onclick="switchTab('fusion')">⚔️ Fusion Calculator</button>
-                <button class="tab-button" onclick="switchTab('checklist')">📋 Daily Checklist</button>
+                <button class="tab-button active" onclick="switchTab('checklist')">📋 Daily Checklist</button>
+                <button class="tab-button" onclick="switchTab('fusion')">⚔️ Fusion Calculator</button>
             </div>
         </div>
-
-        <!-- Fusion Calculator Tab -->
-        <div id="fusion-tab" class="tab-content active">
-            <div class="fusion-container">
-                <div class="info-box">
-                    <strong>Valence Fusion Rules:</strong>
-                    <ul>
-                        <li>Fusing weapons combines their bonuses (must be same weapon type)</li>
-                        <li>Result percentage: Always (11 × highest%) ÷ 10, regardless of base weapon</li>
-                        <li>Bonus type: Determined by priority (Damage > Critical > Status > Elemental)</li>
-                        <li>If Final Bonus ≥ 58%, it gets rounded up to 60%</li>
-                        <li>Base weapon (first selected) keeps its forma/catalyst/potato status</li>
-                        <li>Other weapons are destroyed in the process</li>
-                        <li>All weapons must be at least Rank 30</li>
-                    </ul>
-                    
-                    <button class="collapsible">Bonus Type Priority</button>
-                    <div class="collapsible-content">
-                        <div class="collapsible-inner">
-                            <table>
-                                <tr>
-                                    <th>Bonus Type Priority</th>
-                                    <th>Min%</th>
-                                    <th>Max%</th>
-                                </tr>
-                                <tr>
-                                    <td>1. Damage</td>
-                                    <td>25%</td>
-                                    <td>60%</td>
-                                </tr>
-                                <tr>
-                                    <td>2. Critical Chance</td>
-                                    <td>25%</td>
-                                    <td>60%</td>
-                                </tr>
-                                <tr>
-                                    <td>3. Status Chance</td>
-                                    <td>25%</td>
-                                    <td>60%</td>
-                                </tr>
-                                <tr>
-                                    <td>4. Elemental Damage</td>
-                                    <td>25%</td>
-                                    <td>60%</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    
-                    <button class="collapsible">Fusions Needed to Reach 60%</button>
-                    <div class="collapsible-content">
-                        <div class="collapsible-inner">
-                            <table>
-                                <tr>
-                                    <th>Starting %</th>
-                                    <th>Fusions Needed</th>
-                                </tr>
-                                <tr>
-                                    <td>58.0%+</td>
-                                    <td>0 (automatically rounded up)</td>
-                                </tr>
-                                <tr>
-                                    <td>52.8%</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td>48.0%</td>
-                                    <td>2</td>
-                                </tr>
-                                <tr>
-                                    <td>43.6%</td>
-                                    <td>3</td>
-                                </tr>
-                                <tr>
-                                    <td>39.7%</td>
-                                    <td>4</td>
-                                </tr>
-                                <tr>
-                                    <td>36.1%</td>
-                                    <td>5</td>
-                                </tr>
-                                <tr>
-                                    <td>32.8%</td>
-                                    <td>6</td>
-                                </tr>
-                                <tr>
-                                    <td>29.8%</td>
-                                    <td>7</td>
-                                </tr>
-                                <tr>
-                                    <td>27.1%</td>
-                                    <td>8</td>
-                                </tr>
-                                <tr>
-                                    <td>25.0%</td>
-                                    <td>9</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="weapon-inputs">
-                    <!-- Weapon rows will be added here dynamically -->
-                </div>
-                
-                <div class="buttons">
-                    <div>
-                        <button id="add-weapon" class="fusion-btn">Add Weapon</button>
-                        <button id="calculate" class="fusion-btn">Calculate Fusion</button>
-                    </div>
-                    <button id="reset-fusion" class="fusion-btn">Reset</button>
-                </div>
-                
-                <div id="result" class="result" style="display: none;">
-                    <h3>Valence Fusion Result</h3>
-                    <p id="result-text"></p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Checklist Tab -->
-        <div id="checklist-tab" class="tab-content">
+        
+        <div id="checklist-tab" class="tab-content active">
             <div class="quick-stats">
                 <div class="stat">
                     <span class="stat-value" id="daily-progress">0%</span>
@@ -1123,6 +1002,124 @@
                 <button class="control-btn reset-btn" onclick="resetChecklist()">🔄 Reset All</button>
             </div>
         </div>
+        
+        <div id="fusion-tab" class="tab-content">
+            <div class="fusion-container">
+                <div class="info-box">
+                    <strong>Valence Fusion Rules:</strong>
+                    <ul>
+                        <li>Fusing weapons combines their bonuses (must be same weapon type)</li>
+                        <li>Result percentage: Always (11 × highest%) ÷ 10, regardless of base weapon</li>
+                        <li>Bonus type: Determined by priority (Damage > Critical > Status > Elemental)</li>
+                        <li>If Final Bonus ≥ 58%, it gets rounded up to 60%</li>
+                        <li>Base weapon (first selected) keeps its forma/catalyst/potato status</li>
+                        <li>Other weapons are destroyed in the process</li>
+                        <li>All weapons must be at least Rank 30</li>
+                    </ul>
+                    
+                    <button class="collapsible">Bonus Type Priority</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-inner">
+                            <table>
+                                <tr>
+                                    <th>Bonus Type Priority</th>
+                                    <th>Min%</th>
+                                    <th>Max%</th>
+                                </tr>
+                                <tr>
+                                    <td>1. Damage</td>
+                                    <td>25%</td>
+                                    <td>60%</td>
+                                </tr>
+                                <tr>
+                                    <td>2. Critical Chance</td>
+                                    <td>25%</td>
+                                    <td>60%</td>
+                                </tr>
+                                <tr>
+                                    <td>3. Status Chance</td>
+                                    <td>25%</td>
+                                    <td>60%</td>
+                                </tr>
+                                <tr>
+                                    <td>4. Elemental Damage</td>
+                                    <td>25%</td>
+                                    <td>60%</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <button class="collapsible">Fusions Needed to Reach 60%</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-inner">
+                            <table>
+                                <tr>
+                                    <th>Starting %</th>
+                                    <th>Fusions Needed</th>
+                                </tr>
+                                <tr>
+                                    <td>58.0%+</td>
+                                    <td>0 (automatically rounded up)</td>
+                                </tr>
+                                <tr>
+                                    <td>52.8%</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>48.0%</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td>43.6%</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <td>39.7%</td>
+                                    <td>4</td>
+                                </tr>
+                                <tr>
+                                    <td>36.1%</td>
+                                    <td>5</td>
+                                </tr>
+                                <tr>
+                                    <td>32.8%</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>29.8%</td>
+                                    <td>7</td>
+                                </tr>
+                                <tr>
+                                    <td>27.1%</td>
+                                    <td>8</td>
+                                </tr>
+                                <tr>
+                                    <td>25.0%</td>
+                                    <td>9</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="weapon-inputs">
+                    </div>
+                
+                <div class="buttons">
+                    <div>
+                        <button id="add-weapon" class="fusion-btn">Add Weapon</button>
+                        <button id="calculate" class="fusion-btn">Calculate Fusion</button>
+                    </div>
+                    <button id="reset-fusion" class="fusion-btn">Reset</button>
+                </div>
+                
+                <div id="result" class="result" style="display: none;">
+                    <h3>Valence Fusion Result</h3>
+                    <p id="result-text"></p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1166,6 +1163,9 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             initializeFusionCalculator();
+            // Automatically initialize the first tab (Checklist)
+            window.checklistInitialized = true;
+            checklist = new WarframeChecklist();
         });
 
         function initializeFusionCalculator() {
@@ -1710,4 +1710,3 @@
     </script>
 </body>
 </html>
-                

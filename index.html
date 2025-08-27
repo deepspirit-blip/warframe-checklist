@@ -3,10 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Warframe Daily Checklist</title>
-    <meta name="description" content="A comprehensive daily and weekly checklist for Warframe players to track their progress and activities.">
-    <meta name="author" content="Warframe Community">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <title>Warframe Toolkit</title>
     <style>
         * {
             margin: 0;
@@ -54,6 +51,228 @@
             text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
         }
 
+        .tab-container {
+            margin-bottom: 20px;
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 5px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 5px;
+            justify-content: center;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, var(--primary-color), #00a8cc);
+            color: var(--bg-dark);
+            box-shadow: 0 3px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .tab-button:hover:not(.active) {
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Fusion Calculator Styles */
+        .fusion-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .weapon-row {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .weapon-row input, .weapon-row select {
+            padding: 10px;
+            background-color: #3a3a3a;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 4px;
+        }
+
+        .weapon-select {
+            flex: 2;
+        }
+
+        .bonus-type {
+            flex: 1.5;
+        }
+
+        .percent-input, .rank-input {
+            width: 80px;
+        }
+
+        .fusion-btn {
+            background-color: #ff9900;
+            color: #1a1a1a;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+            transition: background-color 0.2s;
+        }
+
+        .fusion-btn:hover {
+            background-color: #ffaa33;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #333;
+            border-radius: 4px;
+        }
+
+        .result h3 {
+            color: #ff9900;
+            margin-top: 0;
+        }
+
+        .final-result {
+            color: #00ff00;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .delete-btn {
+            background-color: #ff3333;
+            color: white;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background-color: #ff5555;
+        }
+
+        .info-box {
+            background-color: #333;
+            padding: 15px;
+            border-left: 4px solid #ff9900;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+
+        .validation-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        .valid {
+            color: #00ff00;
+        }
+
+        .invalid {
+            color: #ff0000;
+        }
+
+        .collapsible {
+            background-color: #444;
+            color: #e0e0e0;
+            cursor: pointer;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 4px;
+            margin: 5px 0;
+            transition: background-color 0.2s;
+        }
+        
+        .collapsible:hover {
+            background-color: #555;
+        }
+        
+        .collapsible:after {
+            content: '\002B';
+            color: #ff9900;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+        }
+        
+        .collapsible.active:after {
+            content: "\2212";
+        }
+        
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background-color: #333;
+        }
+        
+        .collapsible-content.active {
+            max-height: 500px;
+            transition: max-height 0.3s ease-in;
+        }
+        
+        .collapsible-inner {
+            padding: 15px;
+        }
+        
+        optgroup {
+            font-weight: bold;
+            color: #ff9900;
+        }
+
+        /* Checklist Styles */
         .quick-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -255,7 +474,6 @@
             background: rgba(0, 212, 255, 0.4);
         }
 
-        /* Task states */
         .task-item.completed, .weekly-task-item.completed {
             opacity: 0.7;
             text-decoration: line-through;
@@ -268,7 +486,6 @@
             background: rgba(255, 71, 87, 0.1);
         }
 
-        /* Control buttons */
         .control-bar {
             display: flex;
             justify-content: center;
@@ -302,7 +519,6 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
-        /* Responsive design */
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
@@ -310,6 +526,14 @@
             
             h1 {
                 font-size: 1.5rem;
+            }
+            
+            .tab-nav {
+                flex-direction: column;
+            }
+
+            .tab-button {
+                max-width: none;
             }
             
             .task-grid {
@@ -338,6 +562,15 @@
                 width: 100%;
                 max-width: 300px;
             }
+
+            .weapon-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .weapon-row input, .weapon-row select {
+                width: 100%;
+            }
         }
 
         @media (max-width: 480px) {
@@ -354,515 +587,894 @@
 </head>
 <body>
     <div class="container">
-        <h1>⚡ WARFRAME DAILY CHECKLIST ⚡</h1>
+        <h1>🌌 WARFRAME TOOLKIT 🌌</h1>
         
-        <div class="quick-stats">
-            <div class="stat">
-                <span class="stat-value" id="daily-progress">0%</span>
-                <span>Daily Complete</span>
-            </div>
-            <div class="stat">
-                <span class="stat-value" id="weekly-progress">0%</span>
-                <span>Weekly Complete</span>
-            </div>
-            <div class="stat">
-                <span class="stat-value" id="completed-tasks">0</span>
-                <span>Tasks Done</span>
-            </div>
-            <div class="stat">
-                <span class="stat-value" id="streak-counter">0</span>
-                <span>Day Streak</span>
+        <div class="tab-container">
+            <div class="tab-nav">
+                <button class="tab-button active" onclick="switchTab('fusion')">⚔️ Fusion Calculator</button>
+                <button class="tab-button" onclick="switchTab('checklist')">📋 Daily Checklist</button>
             </div>
         </div>
 
-        <div class="timer-compact">
-            <div class="timer-item">
-                <span class="timer-label">Daily Reset:</span>
-                <span id="daily-reset">Loading...</span>
-            </div>
-            <div class="timer-item">
-                <span class="timer-label">Weekly Reset:</span>
-                <span id="weekly-reset">Loading...</span>
-            </div>
-            <div class="timer-item">
-                <span class="timer-label">Baro Ki'Teer:</span>
-                <span><span id="baro-status">Loading...</span> <span id="baro-timer">--</span></span>
-            </div>
-            <div class="timer-item">
-                <span class="timer-label">Eleanor:</span>
-                <span><span id="eleanor-status">Loading...</span> | <span id="eleanor-timer">--</span></span>
-            </div>
-        </div>
-
-        <div class="section daily-tasks">
-            <h2 class="section-title">🔥 Daily Tasks</h2>
-            
-            <div class="task-category">
-                <div class="category-title">Essential (High Priority)</div>
-                <div class="task-grid">
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="daily-login">
-                        <label for="daily-login" class="task-label">Daily Login Reward</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="daily-login">✕</button>
+        <!-- Fusion Calculator Tab -->
+        <div id="fusion-tab" class="tab-content active">
+            <div class="fusion-container">
+                <div class="info-box">
+                    <strong>Valence Fusion Rules:</strong>
+                    <ul>
+                        <li>Fusing weapons combines their bonuses (must be same weapon type)</li>
+                        <li>Result percentage: Always (11 × highest%) ÷ 10, regardless of base weapon</li>
+                        <li>Bonus type: Determined by priority (Damage > Critical > Status > Elemental)</li>
+                        <li>If Final Bonus ≥ 58%, it gets rounded up to 60%</li>
+                        <li>Base weapon (first selected) keeps its forma/catalyst/potato status</li>
+                        <li>Other weapons are destroyed in the process</li>
+                        <li>All weapons must be at least Rank 30</li>
+                    </ul>
+                    
+                    <button class="collapsible">Bonus Type Priority</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-inner">
+                            <table>
+                                <tr>
+                                    <th>Bonus Type Priority</th>
+                                    <th>Min%</th>
+                                    <th>Max%</th>
+                                </tr>
+                                <tr>
+                                    <td>1. Damage</td>
+                                    <td>25%</td>
+                                    <td>60%</td>
+                                </tr>
+                                <tr>
+                                    <td>2. Critical Chance</td>
+                                    <td>25%</td>
+                                    <td>60%</td>
+                                </tr>
+                                <tr>
+                                    <td>3. Status Chance</td>
+                                    <td>25%</td>
+                                    <td>60%</td>
+                                </tr>
+                                <tr>
+                                    <td>4. Elemental Damage</td>
+                                    <td>25%</td>
+                                    <td>60%</td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="sortie">
-                        <label for="sortie" class="task-label">Daily Sortie</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="sortie">✕</button>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="syndicate-daily">
-                        <label for="syndicate-daily" class="task-label">Syndicate Missions</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="syndicate-daily">✕</button>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="focus-cap">
-                        <label for="focus-cap" class="task-label">Focus Cap (250K+)</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="focus-cap">✕</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="task-category">
-                <div class="category-title">Combat & Farming</div>
-                <div class="task-grid">
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="steel-path">
-                        <label for="steel-path" class="task-label">Steel Path Incursions</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="steel-path">✕</button>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="arbitrations">
-                        <label for="arbitrations" class="task-label">Arbitrations</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="arbitrations">✕</button>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="relic-farming">
-                        <label for="relic-farming" class="task-label">Open Prime Relics</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="relic-farming">✕</button>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="lich-sister">
-                        <label for="lich-sister" class="task-label">Lich/Sister Progress</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="lich-sister">✕</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="task-category">
-                <div class="category-title">Main Syndicates</div>
-                <div class="task-grid">
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="steel-meridian">
-                        <label for="steel-meridian" class="task-label">Steel Meridian</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="steel-meridian">✕</button>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="arbiters-hexis">
-                        <label for="arbiters-hexis" class="task-label">Arbiters of Hexis</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="arbiters-hexis">✕</button>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="cephalon-suda">
-                        <label for="cephalon-suda" class="task-label">Cephalon Suda</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="cephalon-suda">✕</button>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="perrin-sequence">
-                        <label for="perrin-sequence" class="task-label">Perrin Sequence</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="perrin-sequence">✕</button>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="red-veil">
-                        <label for="red-veil" class="task-label">Red Veil</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="red-veil">✕</button>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="new-loka">
-                        <label for="new-loka" class="task-label">New Loka</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="new-loka">✕</button>
+                    
+                    <button class="collapsible">Fusions Needed to Reach 60%</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-inner">
+                            <table>
+                                <tr>
+                                    <th>Starting %</th>
+                                    <th>Fusions Needed</th>
+                                </tr>
+                                <tr>
+                                    <td>58.0%+</td>
+                                    <td>0 (automatically rounded up)</td>
+                                </tr>
+                                <tr>
+                                    <td>52.8%</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>48.0%</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td>43.6%</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <td>39.7%</td>
+                                    <td>4</td>
+                                </tr>
+                                <tr>
+                                    <td>36.1%</td>
+                                    <td>5</td>
+                                </tr>
+                                <tr>
+                                    <td>32.8%</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>29.8%</td>
+                                    <td>7</td>
+                                </tr>
+                                <tr>
+                                    <td>27.1%</td>
+                                    <td>8</td>
+                                </tr>
+                                <tr>
+                                    <td>25.0%</td>
+                                    <td>9</td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="task-category">
-                <div class="category-title">Open World Syndicates</div>
-                <div class="task-grid">
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="ostron">
-                        <label for="ostron" class="task-label">Ostron (Cetus)</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="ostron">✕</button>
-                        </div>
+                
+                <div id="weapon-inputs">
+                    <!-- Weapon rows will be added here dynamically -->
+                </div>
+                
+                <div class="buttons">
+                    <div>
+                        <button id="add-weapon" class="fusion-btn">Add Weapon</button>
+                        <button id="calculate" class="fusion-btn">Calculate Fusion</button>
                     </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="solaris-united">
-                        <label for="solaris-united" class="task-label">Solaris United</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="solaris-united">✕</button>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="entrati">
-                        <label for="entrati" class="task-label">Entrati (Deimos)</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="entrati">✕</button>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="holdfasts">
-                        <label for="holdfasts" class="task-label">The Holdfasts</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="holdfasts">✕</button>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="cavia">
-                        <label for="cavia" class="task-label">Cavia</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="cavia">✕</button>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" id="the-hex">
-                        <label for="the-hex" class="task-label">The Hex</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="the-hex">✕</button>
-                        </div>
-                    </div>
+                    <button id="reset-fusion" class="fusion-btn">Reset</button>
+                </div>
+                
+                <div id="result" class="result" style="display: none;">
+                    <h3>Valence Fusion Result</h3>
+                    <p id="result-text"></p>
                 </div>
             </div>
         </div>
 
-        <div class="section weekly-section">
-            <h2 class="section-title">📅 Weekly Tasks</h2>
-            <div class="weekly-grid">
-                <div class="weekly-column">
-                    <div class="category-title">Core Weekly</div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="nightwave">
-                        <label for="nightwave" class="task-label">Nightwave Challenges</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="nightwave">✕</button>
-                        </div>
-                    </div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="nightwave-credits">
-                        <label for="nightwave-credits" class="task-label">Nightwave Credits</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="nightwave-credits">✕</button>
-                        </div>
-                    </div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="archon-hunt">
-                        <label for="archon-hunt" class="task-label">Archon Hunt</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="archon-hunt">✕</button>
-                        </div>
-                    </div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="ayatan-hunt">
-                        <label for="ayatan-hunt" class="task-label">Ayatan Hunt</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="ayatan-hunt">✕</button>
-                        </div>
-                    </div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="help-clem">
-                        <label for="help-clem" class="task-label">Help Clem</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="help-clem">✕</button>
-                        </div>
-                    </div>
+        <!-- Checklist Tab -->
+        <div id="checklist-tab" class="tab-content">
+            <div class="quick-stats">
+                <div class="stat">
+                    <span class="stat-value" id="daily-progress">0%</span>
+                    <span>Daily Complete</span>
                 </div>
+                <div class="stat">
+                    <span class="stat-value" id="weekly-progress">0%</span>
+                    <span>Weekly Complete</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="completed-tasks">0</span>
+                    <span>Tasks Done</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="streak-counter">0</span>
+                    <span>Day Streak</span>
+                </div>
+            </div>
 
-                <div class="weekly-column">
-                    <div class="category-title">Relic Packs</div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="steel-path-teshin">
-                        <label for="steel-path-teshin" class="task-label">Steel Path (Teshin)</label>
-                        <div class="task-actions">
-                            <div class="counter">
-                                <button class="counter-btn" data-task="steel-path-teshin" data-action="minus">-</button>
-                                <span id="sp-teshin-count">0</span>/25
-                                <button class="counter-btn" data-task="steel-path-teshin" data-action="plus">+</button>
+            <div class="timer-compact">
+                <div class="timer-item">
+                    <span class="timer-label">Daily Reset:</span>
+                    <span id="daily-reset">Loading...</span>
+                </div>
+                <div class="timer-item">
+                    <span class="timer-label">Weekly Reset:</span>
+                    <span id="weekly-reset">Loading...</span>
+                </div>
+                <div class="timer-item">
+                    <span class="timer-label">Baro Ki'Teer:</span>
+                    <span><span id="baro-status">Loading...</span> <span id="baro-timer">--</span></span>
+                </div>
+                <div class="timer-item">
+                    <span class="timer-label">Eleanor:</span>
+                    <span><span id="eleanor-status">Loading...</span> | <span id="eleanor-timer">--</span></span>
+                </div>
+            </div>
+
+            <div class="section daily-tasks">
+                <h2 class="section-title">🔥 Daily Tasks</h2>
+                
+                <div class="task-category">
+                    <div class="category-title">Essential (High Priority)</div>
+                    <div class="task-grid">
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="daily-login">
+                            <label for="daily-login" class="task-label">Daily Login Reward</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="daily-login">✕</button>
                             </div>
-                            <button class="ignore-btn" data-task="steel-path-teshin">✕</button>
                         </div>
-                    </div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="conclave-rank1">
-                        <label for="conclave-rank1" class="task-label">Conclave (Rank 1)</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="conclave-rank1">✕</button>
-                        </div>
-                    </div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="ostron-suumbaat">
-                        <label for="ostron-suumbaat" class="task-label">Ostron - Suumbaat (Rank 3)</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="ostron-suumbaat">✕</button>
-                        </div>
-                    </div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="solaris-smokefinger">
-                        <label for="solaris-smokefinger" class="task-label">Solaris - Smokefinger (Rank 2)</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="solaris-smokefinger">✕</button>
-                        </div>
-                    </div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="entrati-otak">
-                        <label for="entrati-otak" class="task-label">Entrati - Otak (Rank 2)</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="entrati-otak">✕</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="weekly-column">
-                    <div class="category-title">Vendors & NPCs</div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="palladino-riven">
-                        <label for="palladino-riven" class="task-label">Palladino (Riven)</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="palladino-riven">✕</button>
-                        </div>
-                    </div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="yonta-kuva">
-                        <label for="yonta-kuva" class="task-label">Yonta (Kuva)</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="yonta-kuva">✕</button>
-                        </div>
-                    </div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="acridies-clamps">
-                        <label for="acridies-clamps" class="task-label">Acridies (Clamps)</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="acridies-clamps">✕</button>
-                        </div>
-                    </div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="teshin-steel">
-                        <label for="teshin-steel" class="task-label">Teshin (Steel)</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="teshin-steel">✕</button>
-                        </div>
-                    </div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="bird3-shard">
-                        <label for="bird3-shard" class="task-label">Bird 3 (Shard)</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="bird3-shard">✕</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="weekly-column">
-                    <div class="category-title">Circuit & Activities</div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="duviri-circuit">
-                        <label for="duviri-circuit" class="task-label">Duviri Circuit</label>
-                        <div class="task-actions">
-                            <div class="counter">
-                                <button class="counter-btn" data-task="duviri-circuit" data-action="minus">-</button>
-                                <span id="duviri-count">0</span>/10
-                                <button class="counter-btn" data-task="duviri-circuit" data-action="plus">+</button>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="sortie">
+                            <label for="sortie" class="task-label">Daily Sortie</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="sortie">✕</button>
                             </div>
-                            <button class="ignore-btn" data-task="duviri-circuit">✕</button>
                         </div>
-                    </div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="sp-circuit">
-                        <label for="sp-circuit" class="task-label">SP Circuit</label>
-                        <div class="task-actions">
-                            <div class="counter">
-                                <button class="counter-btn" data-task="sp-circuit" data-action="minus">-</button>
-                                <span id="sp-count">0</span>/10
-                                <button class="counter-btn" data-task="sp-circuit" data-action="plus">+</button>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="syndicate-daily">
+                            <label for="syndicate-daily" class="task-label">Syndicate Missions</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="syndicate-daily">✕</button>
                             </div>
-                            <button class="ignore-btn" data-task="sp-circuit">✕</button>
                         </div>
-                    </div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="kahl-mission">
-                        <label for="kahl-mission" class="task-label">Kahl Mission</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="kahl-mission">✕</button>
-                        </div>
-                    </div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="netracells">
-                        <label for="netracells" class="task-label">Netracells (5x)</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="netracells">✕</button>
-                        </div>
-                    </div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="calendar">
-                        <label for="calendar" class="task-label">Calendar</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="calendar">✕</button>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="focus-cap">
+                            <label for="focus-cap" class="task-label">Focus Cap (250K+)</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="focus-cap">✕</button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="weekly-column">
-                    <div class="category-title">Elite Endgame</div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="elite-archimedea">
-                        <label for="elite-archimedea" class="task-label">Elite Archimedea</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="elite-archimedea">✕</button>
+                <div class="task-category">
+                    <div class="category-title">Combat & Farming</div>
+                    <div class="task-grid">
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="steel-path">
+                            <label for="steel-path" class="task-label">Steel Path Incursions</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="steel-path">✕</button>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="arbitrations">
+                            <label for="arbitrations" class="task-label">Arbitrations</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="arbitrations">✕</button>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="relic-farming">
+                            <label for="relic-farming" class="task-label">Open Prime Relics</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="relic-farming">✕</button>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="lich-sister">
+                            <label for="lich-sister" class="task-label">Lich/Sister Progress</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="lich-sister">✕</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="weekly-task-item">
-                        <input type="checkbox" class="task-checkbox" id="temporal-archimedea">
-                        <label for="temporal-archimedea" class="task-label">Temporal Archimedea</label>
-                        <div class="task-actions">
-                            <button class="ignore-btn" data-task="temporal-archimedea">✕</button>
+                </div>
+
+                <div class="task-category">
+                    <div class="category-title">Main Syndicates</div>
+                    <div class="task-grid">
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="steel-meridian">
+                            <label for="steel-meridian" class="task-label">Steel Meridian</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="steel-meridian">✕</button>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="arbiters-hexis">
+                            <label for="arbiters-hexis" class="task-label">Arbiters of Hexis</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="arbiters-hexis">✕</button>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="cephalon-suda">
+                            <label for="cephalon-suda" class="task-label">Cephalon Suda</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="cephalon-suda">✕</button>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="perrin-sequence">
+                            <label for="perrin-sequence" class="task-label">Perrin Sequence</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="perrin-sequence">✕</button>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="red-veil">
+                            <label for="red-veil" class="task-label">Red Veil</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="red-veil">✕</button>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="new-loka">
+                            <label for="new-loka" class="task-label">New Loka</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="new-loka">✕</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-category">
+                    <div class="category-title">Open World Syndicates</div>
+                    <div class="task-grid">
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="ostron">
+                            <label for="ostron" class="task-label">Ostron (Cetus)</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="ostron">✕</button>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="solaris-united">
+                            <label for="solaris-united" class="task-label">Solaris United</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="solaris-united">✕</button>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="entrati">
+                            <label for="entrati" class="task-label">Entrati (Deimos)</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="entrati">✕</button>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="holdfasts">
+                            <label for="holdfasts" class="task-label">The Holdfasts</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="holdfasts">✕</button>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="cavia">
+                            <label for="cavia" class="task-label">Cavia</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="cavia">✕</button>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" id="the-hex">
+                            <label for="the-hex" class="task-label">The Hex</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="the-hex">✕</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="control-bar">
-            <button class="control-btn auto-check-btn" onclick="autoCheckEssentials()">✓ Check Essentials</button>
-            <button class="control-btn reset-btn" onclick="resetChecklist()">🔄 Reset All</button>
+            <div class="section weekly-section">
+                <h2 class="section-title">📅 Weekly Tasks</h2>
+                <div class="weekly-grid">
+                    <div class="weekly-column">
+                        <div class="category-title">Core Weekly</div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="nightwave">
+                            <label for="nightwave" class="task-label">Nightwave Challenges</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="nightwave">✕</button>
+                            </div>
+                        </div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="nightwave-credits">
+                            <label for="nightwave-credits" class="task-label">Nightwave Credits</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="nightwave-credits">✕</button>
+                            </div>
+                        </div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="archon-hunt">
+                            <label for="archon-hunt" class="task-label">Archon Hunt</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="archon-hunt">✕</button>
+                            </div>
+                        </div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="ayatan-hunt">
+                            <label for="ayatan-hunt" class="task-label">Ayatan Hunt</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="ayatan-hunt">✕</button>
+                            </div>
+                        </div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="help-clem">
+                            <label for="help-clem" class="task-label">Help Clem</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="help-clem">✕</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="weekly-column">
+                        <div class="category-title">Relic Packs</div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="steel-path-teshin">
+                            <label for="steel-path-teshin" class="task-label">Steel Path (Teshin)</label>
+                            <div class="task-actions">
+                                <div class="counter">
+                                    <button class="counter-btn" data-task="steel-path-teshin" data-action="minus">-</button>
+                                    <span id="sp-teshin-count">0</span>/25
+                                    <button class="counter-btn" data-task="steel-path-teshin" data-action="plus">+</button>
+                                </div>
+                                <button class="ignore-btn" data-task="steel-path-teshin">✕</button>
+                            </div>
+                        </div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="conclave-rank1">
+                            <label for="conclave-rank1" class="task-label">Conclave (Rank 1)</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="conclave-rank1">✕</button>
+                            </div>
+                        </div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="ostron-suumbaat">
+                            <label for="ostron-suumbaat" class="task-label">Ostron - Suumbaat (Rank 3)</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="ostron-suumbaat">✕</button>
+                            </div>
+                        </div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="solaris-smokefinger">
+                            <label for="solaris-smokefinger" class="task-label">Solaris - Smokefinger (Rank 2)</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="solaris-smokefinger">✕</button>
+                            </div>
+                        </div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="entrati-otak">
+                            <label for="entrati-otak" class="task-label">Entrati - Otak (Rank 2)</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="entrati-otak">✕</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="weekly-column">
+                        <div class="category-title">Vendors & NPCs</div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="palladino-riven">
+                            <label for="palladino-riven" class="task-label">Palladino (Riven)</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="palladino-riven">✕</button>
+                            </div>
+                        </div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="yonta-kuva">
+                            <label for="yonta-kuva" class="task-label">Yonta (Kuva)</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="yonta-kuva">✕</button>
+                            </div>
+                        </div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="acridies-clamps">
+                            <label for="acridies-clamps" class="task-label">Acridies (Clamps)</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="acridies-clamps">✕</button>
+                            </div>
+                        </div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="teshin-steel">
+                            <label for="teshin-steel" class="task-label">Teshin (Steel)</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="teshin-steel">✕</button>
+                            </div>
+                        </div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="bird3-shard">
+                            <label for="bird3-shard" class="task-label">Bird 3 (Shard)</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="bird3-shard">✕</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="weekly-column">
+                        <div class="category-title">Circuit & Activities</div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="duviri-circuit">
+                            <label for="duviri-circuit" class="task-label">Duviri Circuit</label>
+                            <div class="task-actions">
+                                <div class="counter">
+                                    <button class="counter-btn" data-task="duviri-circuit" data-action="minus">-</button>
+                                    <span id="duviri-count">0</span>/10
+                                    <button class="counter-btn" data-task="duviri-circuit" data-action="plus">+</button>
+                                </div>
+                                <button class="ignore-btn" data-task="duviri-circuit">✕</button>
+                            </div>
+                        </div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="sp-circuit">
+                            <label for="sp-circuit" class="task-label">SP Circuit</label>
+                            <div class="task-actions">
+                                <div class="counter">
+                                    <button class="counter-btn" data-task="sp-circuit" data-action="minus">-</button>
+                                    <span id="sp-count">0</span>/10
+                                    <button class="counter-btn" data-task="sp-circuit" data-action="plus">+</button>
+                                </div>
+                                <button class="ignore-btn" data-task="sp-circuit">✕</button>
+                            </div>
+                        </div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="kahl-mission">
+                            <label for="kahl-mission" class="task-label">Kahl Mission</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="kahl-mission">✕</button>
+                            </div>
+                        </div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="netracells">
+                            <label for="netracells" class="task-label">Netracells (5x)</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="netracells">✕</button>
+                            </div>
+                        </div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="calendar">
+                            <label for="calendar" class="task-label">Calendar</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="calendar">✕</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="weekly-column">
+                        <div class="category-title">Elite Endgame</div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="elite-archimedea">
+                            <label for="elite-archimedea" class="task-label">Elite Archimedea</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="elite-archimedea">✕</button>
+                            </div>
+                        </div>
+                        <div class="weekly-task-item">
+                            <input type="checkbox" class="task-checkbox" id="temporal-archimedea">
+                            <label for="temporal-archimedea" class="task-label">Temporal Archimedea</label>
+                            <div class="task-actions">
+                                <button class="ignore-btn" data-task="temporal-archimedea">✕</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-bar">
+                <button class="control-btn auto-check-btn" onclick="autoCheckEssentials()">✓ Check Essentials</button>
+                <button class="control-btn reset-btn" onclick="resetChecklist()">🔄 Reset All</button>
+            </div>
         </div>
     </div>
 
     <script>
+        // Tab switching function
+        function switchTab(tab) {
+            // Remove active class from all tabs and content
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked tab and corresponding content
+            event.target.classList.add('active');
+            document.getElementById(tab + '-tab').classList.add('active');
+            
+            // Initialize checklist when switching to that tab
+            if (tab === 'checklist' && !window.checklistInitialized) {
+                window.checklistInitialized = true;
+                checklist = new WarframeChecklist();
+            }
+        }
+
+        // Fusion Calculator Code
+        const allWeapons = {
+            "Kuva": [
+                "Kuva Ayanga", "Kuva Brakk", "Kuva Bramma", "Kuva Chakkhurr", "Kuva Drakgoon",
+                "Kuva Grattler", "Kuva Hek", "Kuva Hind", "Kuva Karak", "Kuva Kohm",
+                "Kuva Kraken", "Kuva Nukor", "Kuva Ogris", "Kuva Quartakk", "Kuva Seer",
+                "Kuva Shildeg", "Kuva Sobek", "Kuva Tonkor", "Kuva Twin Stubbas", "Kuva Zarr"
+            ],
+            "Tenet": [
+                "Tenet Arca Plasmor", "Tenet Cycron", "Tenet Diplos", "Tenet Envoy", "Tenet Exec",
+                "Tenet Ferrox", "Tenet Flux Rifle", "Tenet Grigori", "Tenet Livia", "Tenet Plinx",
+                "Tenet Spirex", "Tenet Tetra"
+            ],
+            "Coda": [
+                "Coda Bassocyst", "Coda Catabolyst", "Coda Caustacyst", "Coda Hema", "Coda Hirudo",
+                "Coda Mire", "Coda Motovore", "Coda Pathocyst", "Coda Pox", "Coda Sporothrix",
+                "Coda Synapse", "Coda Tysis", "Dual Coda Torxica"
+            ],
+            "Other": ["Cedo"]
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeFusionCalculator();
+        });
+
+        function initializeFusionCalculator() {
+            const weaponInputs = document.getElementById('weapon-inputs');
+            const addWeaponBtn = document.getElementById('add-weapon');
+            const calculateBtn = document.getElementById('calculate');
+            const resetBtn = document.getElementById('reset-fusion');
+            const resultDiv = document.getElementById('result');
+            const resultText = document.getElementById('result-text');
+            
+            // Initialize collapsible sections
+            const collapsibles = document.querySelectorAll('.collapsible');
+            collapsibles.forEach(function(collapsible) {
+                collapsible.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    const content = this.nextElementSibling;
+                    content.classList.toggle('active');
+                });
+            });
+            
+            addWeaponRow();
+            addWeaponRow();
+            
+            function addWeaponRow(weaponData = {}) {
+                const row = document.createElement('div');
+                row.className = 'weapon-row';
+                
+                let weaponSelectHTML = '<select class="weapon-select">';
+                weaponSelectHTML += '<option value="">Select a weapon...</option>';
+                for (const [category, weapons] of Object.entries(allWeapons)) {
+                    weaponSelectHTML += '<optgroup label="' + category + '">';
+                    weapons.forEach(weapon => {
+                        const selected = weapon === weaponData.name ? 'selected' : '';
+                        weaponSelectHTML += '<option value="' + weapon + '" ' + selected + '>' + weapon + '</option>';
+                    });
+                    weaponSelectHTML += '</optgroup>';
+                }
+                weaponSelectHTML += '</select>';
+                
+                row.innerHTML = weaponSelectHTML +
+                    '<select class="bonus-type">' +
+                    '<option value="damage"' + (weaponData.bonusType === 'damage' ? ' selected' : '') + '>Damage</option>' +
+                    '<option value="critical"' + (weaponData.bonusType === 'critical' ? ' selected' : '') + '>Critical Chance</option>' +
+                    '<option value="status"' + (weaponData.bonusType === 'status' ? ' selected' : '') + '>Status Chance</option>' +
+                    '<option value="toxin"' + (weaponData.bonusType === 'toxin' ? ' selected' : '') + '>Toxin</option>' +
+                    '<option value="heat"' + (weaponData.bonusType === 'heat' ? ' selected' : '') + '>Heat</option>' +
+                    '<option value="cold"' + (weaponData.bonusType === 'cold' ? ' selected' : '') + '>Cold</option>' +
+                    '<option value="electricity"' + (weaponData.bonusType === 'electricity' ? ' selected' : '') + '>Electricity</option>' +
+                    '</select>' +
+                    '<input type="number" class="percent-input" placeholder="%" min="25" max="60" value="' + (weaponData.percent || 25) + '" step="0.1">' +
+                    '<input type="number" class="rank-input" placeholder="Rank" min="0" max="40" value="' + (weaponData.rank || 30) + '">' +
+                    '<span class="validation-icon percent-valid"></span>' +
+                    '<span class="validation-icon rank-valid"></span>' +
+                    '<button class="delete-btn">×</button>';
+                
+                weaponInputs.appendChild(row);
+                
+                row.querySelector('.delete-btn').addEventListener('click', function() {
+                    if (document.querySelectorAll('.weapon-row').length > 1) {
+                        weaponInputs.removeChild(row);
+                        hideResults();
+                    } else {
+                        alert('You need at least one weapon');
+                    }
+                });
+                
+                const inputs = row.querySelectorAll('input, select');
+                inputs.forEach(input => {
+                    input.addEventListener('change', function() {
+                        validateRow(row);
+                        hideResults();
+                    });
+                });
+                
+                validateRow(row);
+            }
+            
+            function validateRow(rowElement) {
+                const row = rowElement;
+                const weaponSelect = row.querySelector('.weapon-select');
+                const percentInput = row.querySelector('.percent-input');
+                const rankInput = row.querySelector('.rank-input');
+                
+                const weapon = weaponSelect.value;
+                const percent = parseFloat(percentInput.value);
+                const rank = parseInt(rankInput.value);
+                
+                const weaponValid = weapon !== '';
+                const percentValid = !isNaN(percent) && percent >= 25 && percent <= 60;
+                const rankValid = !isNaN(rank) && rank >= 30;
+                
+                const percentValidIcon = row.querySelector('.percent-valid');
+                if (percentValidIcon) {
+                    percentValidIcon.textContent = percentValid ? '✓' : '✗';
+                    percentValidIcon.className = 'validation-icon ' + (percentValid ? 'valid' : 'invalid');
+                }
+                
+                const rankValidIcon = row.querySelector('.rank-valid');
+                if (rankValidIcon) {
+                    rankValidIcon.textContent = rankValid ? '✓' : '✗';
+                    rankValidIcon.className = 'validation-icon ' + (rankValid ? 'valid' : 'invalid');
+                }
+                
+                return weaponValid && percentValid && rankValid;
+            }
+            
+            function hideResults() {
+                resultDiv.style.display = 'none';
+            }
+            
+            addWeaponBtn.addEventListener('click', function() {
+                addWeaponRow();
+            });
+            
+            calculateBtn.addEventListener('click', function() {
+                const rows = document.querySelectorAll('.weapon-row');
+                const weapons = [];
+                let allValid = true;
+                
+                rows.forEach(row => {
+                    const isValid = validateRow(row);
+                    if (!isValid) {
+                        allValid = false;
+                    }
+                    
+                    const weaponName = row.querySelector('.weapon-select').value;
+                    if (weaponName) {
+                        weapons.push({
+                            name: weaponName,
+                            bonusType: row.querySelector('.bonus-type').value,
+                            percent: parseFloat(row.querySelector('.percent-input').value),
+                            rank: parseInt(row.querySelector('.rank-input').value)
+                        });
+                    }
+                });
+                
+                if (weapons.length < 2) {
+                    alert('You need at least 2 weapons for Valence Fusion');
+                    return;
+                }
+                
+                if (!allValid) {
+                    alert('Please fix all validation errors before calculating');
+                    return;
+                }
+                
+                const getBaseWeaponName = (weaponName) => {
+                    return weaponName.replace(/^(Kuva|Tenet|Coda)\s+/, '');
+                };
+                
+                const baseNames = weapons.map(w => getBaseWeaponName(w.name));
+                const uniqueBaseNames = new Set(baseNames);
+                
+                if (uniqueBaseNames.size > 1) {
+                    alert('All weapons must be of the same base type for Valence Fusion');
+                    return;
+                }
+                
+                const fusionResult = calculateValenceFusion(weapons);
+                const additionalFusions = calculateFusionsNeeded(fusionResult.percent);
+                const fusionNeededText = additionalFusions === 0 ? 
+                    '<span style="color: #00ff00;">Maximum reached!</span>' : 
+                    '<span style="color: #ffaa33;">' + additionalFusions + ' more fusion' + (additionalFusions > 1 ? 's' : '') + ' needed</span>';
+                
+                resultText.innerHTML = 
+                    '<strong>Resulting Weapon:</strong> ' + fusionResult.name + '<br>' +
+                    '<strong>Bonus Type:</strong> ' + formatBonusType(fusionResult.bonusType) + '<br>' +
+                    '<strong>Bonus Percentage:</strong> <span class="final-result">' + fusionResult.percent.toFixed(1) + '%</span><br>' +
+                    '<strong>To Reach 60%:</strong> ' + fusionNeededText + '<br>' +
+                    '<strong>Fusion Process:</strong> ' + fusionResult.process + '<br><br>' +
+                    '<strong>Components Used (' + weapons.length + '):</strong><br>' +
+                    fusionResult.components;
+                resultDiv.style.display = 'block';
+            });
+            
+            resetBtn.addEventListener('click', function() {
+                weaponInputs.innerHTML = '';
+                addWeaponRow();
+                addWeaponRow();
+                hideResults();
+            });
+        }
+
+        function formatBonusType(type) {
+            const types = {
+                'damage': 'Bonus Damage',
+                'critical': 'Critical Chance',
+                'status': 'Status Chance',
+                'toxin': 'Toxin Damage',
+                'heat': 'Heat Damage',
+                'cold': 'Cold Damage',
+                'electricity': 'Electricity Damage'
+            };
+            return types[type] || type;
+        }
+        
+        function calculateFusionsNeeded(startingPercent) {
+            if (startingPercent >= 58.0) return 0;
+            if (startingPercent >= 52.8) return 1;
+            if (startingPercent >= 48.0) return 2;
+            if (startingPercent >= 43.6) return 3;
+            if (startingPercent >= 39.7) return 4;
+            if (startingPercent >= 36.1) return 5;
+            if (startingPercent >= 32.8) return 6;
+            if (startingPercent >= 29.8) return 7;
+            if (startingPercent >= 27.1) return 8;
+            return 9;
+        }
+        
+        function calculateValenceFusion(weapons) {
+            const bonusPriority = ['damage', 'critical', 'status', 'toxin', 'heat', 'cold', 'electricity'];
+            
+            let selectedBonusType = weapons[0].bonusType;
+            for (const type of bonusPriority) {
+                if (weapons.some(w => w.bonusType === type)) {
+                    selectedBonusType = type;
+                    break;
+                }
+            }
+            
+            let currentPercent = 0;
+            let fusionSteps = [];
+            
+            fusionSteps.push(`Base weapon: ${weapons[0].name} (${formatBonusType(weapons[0].bonusType)} ${weapons[0].percent}%) - keeps forma/catalyst/potato`);
+            
+            if (weapons.length === 2) {
+                const maxPercent = Math.max(weapons[0].percent, weapons[1].percent);
+                const calculatedPercent = (11 * maxPercent) / 10;
+                currentPercent = Math.min(calculatedPercent, 60);
+                
+                if (currentPercent >= 58) {
+                    currentPercent = 60;
+                }
+                
+                fusionSteps.push(`Fusing with: ${weapons[1].name} (${formatBonusType(weapons[1].bonusType)} ${weapons[1].percent}%) - will be destroyed`);
+                fusionSteps.push(`Calculation: max(${weapons[0].percent}%, ${weapons[1].percent}%) = ${maxPercent}% → (11 × ${maxPercent}) ÷ 10 = ${calculatedPercent.toFixed(1)}%${currentPercent === 60 && calculatedPercent >= 58 ? ' →60% (≥58% rule)' : currentPercent === 60 && calculatedPercent > 60 ? ' →60% (cap)' : ''}`);
+                fusionSteps.push(`Result bonus type: ${formatBonusType(selectedBonusType)} (highest priority)`);
+            } else {
+                currentPercent = weapons[0].percent;
+                
+                for (let i = 1; i < weapons.length; i++) {
+                    const nextWeapon = weapons[i];
+                    const oldPercent = currentPercent;
+                    
+                    const maxPercent = Math.max(currentPercent, nextWeapon.percent);
+                    const calculatedPercent = (11 * maxPercent) / 10;
+                    currentPercent = Math.min(calculatedPercent, 60);
+                    
+                    if (currentPercent >= 58) {
+                        currentPercent = 60;
+                    }
+                    
+                    fusionSteps.push(`Step ${i}: Fuse with ${nextWeapon.name} (${formatBonusType(nextWeapon.bonusType)} ${nextWeapon.percent}%) - will be destroyed`);
+                    fusionSteps.push(`  → max(${oldPercent.toFixed(1)}%, ${nextWeapon.percent}%) = ${maxPercent}% → (11 × ${maxPercent}) ÷ 10 = ${calculatedPercent.toFixed(1)}%${currentPercent === 60 && calculatedPercent >= 58 ? ' →60% (≥58% rule)' : currentPercent === 60 && calculatedPercent > 60 ? ' →60% (cap)' : ''}`);
+                }
+                
+                fusionSteps.push(`Final bonus type: ${formatBonusType(selectedBonusType)} (highest priority among all weapons)`);
+            }
+            
+            const process = fusionSteps.join('<br>');
+            
+            const components = weapons.map((weapon, index) => {
+                const fusionsNeeded = calculateFusionsNeeded(weapon.percent);
+                const fusionText = fusionsNeeded === 0 ? ' (Already ≥58%, auto-60%)' : 
+                                 fusionsNeeded === 1 ? ` (${fusionsNeeded} fusion to 60%)` :
+                                 ` (${fusionsNeeded} fusions to 60%)`;
+                return weapon.name + ': ' + formatBonusType(weapon.bonusType) + ' ' + weapon.percent + '% (Rank ' + weapon.rank + ')' + 
+                       (index === 0 ? ' [BASE - keeps upgrades]' : ' [DESTROYED]') + fusionText;
+            }).join('<br>');
+            
+            const resultWeaponName = weapons[0].name + ' (Fused)';
+            
+            return {
+                name: resultWeaponName,
+                bonusType: selectedBonusType,
+                percent: currentPercent,
+                process: process,
+                components: components
+            };
+        }
+
+        // Checklist Code
         class WarframeChecklist {
             constructor() {
-                this.gameState = this.loadGameState();
-                this.timerInterval = null;
-                this.init();
-            }
-
-            loadGameState() {
-                const savedState = localStorage.getItem('warframe-checklist');
-                const defaultState = {
+                this.gameState = {
                     tasks: {},
                     ignored: {},
                     counters: { duviri: 0, sp: 0, spTeshin: 0 },
                     streak: parseInt(sessionStorage.getItem('warframe-streak') || '0'),
                     lastCompleteDate: sessionStorage.getItem('warframe-last-complete')
                 };
-
-                if (savedState) {
-                    try {
-                        const parsed = JSON.parse(savedState);
-                        return {
-                            ...defaultState,
-                            ...parsed,
-                            // Keep streak in sessionStorage for daily tracking
-                            streak: parseInt(sessionStorage.getItem('warframe-streak') || '0'),
-                            lastCompleteDate: sessionStorage.getItem('warframe-last-complete')
-                        };
-                    } catch (e) {
-                        console.warn('Failed to load saved state, using defaults');
-                        return defaultState;
-                    }
-                }
-                return defaultState;
-            }
-
-            saveGameState() {
-                const stateToSave = {
-                    tasks: this.gameState.tasks,
-                    ignored: this.gameState.ignored,
-                    counters: this.gameState.counters
-                };
-                localStorage.setItem('warframe-checklist', JSON.stringify(stateToSave));
+                
+                this.timerInterval = null;
+                this.init();
             }
 
             init() {
-                this.restoreUIState();
                 this.updateTimers();
                 this.timerInterval = setInterval(() => this.updateTimers(), 60000);
                 this.bindEvents();
                 this.updateProgress();
             }
 
-            restoreUIState() {
-                // Restore task checkboxes
-                Object.entries(this.gameState.tasks).forEach(([taskId, isChecked]) => {
-                    const checkbox = document.getElementById(taskId);
-                    if (checkbox) {
-                        checkbox.checked = isChecked;
-                        this.updateTaskAppearance(checkbox);
-                    }
-                });
-
-                // Restore ignored states
-                Object.entries(this.gameState.ignored).forEach(([taskId, isIgnored]) => {
-                    if (isIgnored) {
-                        const checkbox = document.getElementById(taskId);
-                        if (checkbox) {
-                            const taskItem = checkbox.closest('.task-item, .weekly-task-item');
-                            const ignoreBtn = taskItem.querySelector('.ignore-btn');
-                            
-                            taskItem.classList.add('ignored');
-                            ignoreBtn.classList.add('ignored');
-                        }
-                    }
-                });
-
-                // Restore counters
-                const counterElements = {
-                    duviri: 'duviri-count',
-                    sp: 'sp-count',
-                    spTeshin: 'sp-teshin-count'
-                };
-
-                Object.entries(counterElements).forEach(([key, elementId]) => {
-                    const value = this.gameState.counters[key] || 0;
-                    const element = document.getElementById(elementId);
-                    if (element) {
-                        element.textContent = value;
-                    }
-                });
-            }
-
             updateTimers() {
                 const now = new Date();
                 
-                // Daily reset at 00:00 UTC
                 const dailyReset = new Date();
                 dailyReset.setUTCHours(24, 0, 0, 0);
                 
-                // Weekly reset Monday 00:00 UTC
                 const weeklyReset = new Date();
                 const daysUntilMonday = (8 - now.getUTCDay()) % 7;
                 weeklyReset.setUTCDate(now.getUTCDate() + daysUntilMonday);
@@ -871,7 +1483,6 @@
                     weeklyReset.setUTCDate(weeklyReset.getUTCDate() + 7);
                 }
 
-                // Baro Ki'Teer (every 2 weeks, Friday-Sunday)
                 const baroRef = new Date('2025-01-17T00:00:00.000Z');
                 const daysSinceRef = Math.floor((now - baroRef) / (1000 * 60 * 60 * 24));
                 const cyclePos = daysSinceRef % 14;
@@ -890,7 +1501,6 @@
                     baroStatus = "Arriving";
                 }
 
-                // Eleanor (4-day cycles)
                 const eleanorRef = new Date('2025-08-16T00:00:00.000Z');
                 const daysSinceEleanor = Math.floor((now - eleanorRef) / (1000 * 60 * 60 * 24));
                 const eleanorNext = new Date();
@@ -987,7 +1597,6 @@
                 taskItem.classList.toggle('ignored', this.gameState.ignored[taskId]);
                 ignoreBtn.classList.toggle('ignored', this.gameState.ignored[taskId]);
                 
-                this.saveGameState();
                 this.updateProgress();
             }
 
@@ -1005,11 +1614,9 @@
                     this.gameState.counters[counter.key] = 0;
                 }
                 
-                // Update counter value
                 this.gameState.counters[counter.key] = Math.max(0, Math.min(counter.max, this.gameState.counters[counter.key] + change));
                 document.getElementById(counter.element).textContent = this.gameState.counters[counter.key];
                 
-                // Auto-check when reaching max, uncheck when dropping below max
                 const checkbox = document.getElementById(taskId);
                 const shouldBeChecked = this.gameState.counters[counter.key] >= counter.max;
                 
@@ -1019,8 +1626,6 @@
                     this.updateTaskAppearance(checkbox);
                     this.updateProgress();
                 }
-
-                this.saveGameState();
             }
 
             autoCheckEssentials() {
@@ -1062,7 +1667,6 @@
                         if (element) element.textContent = '0';
                     });
                     
-                    this.saveGameState();
                     this.updateProgress();
                 }
             }
@@ -1073,7 +1677,6 @@
                         this.gameState.tasks[e.target.id] = e.target.checked;
                         this.updateTaskAppearance(e.target);
                         this.updateProgress();
-                        this.saveGameState();
                     }
                 });
                 
@@ -1094,66 +1697,17 @@
             }
         }
 
-        // Global functions for button handlers
+        // Global variables and functions
         let checklist;
         
         function autoCheckEssentials() {
-            checklist.autoCheckEssentials();
+            if (checklist) checklist.autoCheckEssentials();
         }
         
         function resetChecklist() {
-            checklist.resetChecklist();
+            if (checklist) checklist.resetChecklist();
         }
-
-        // Initialize on DOM load
-        document.addEventListener('DOMContentLoaded', () => {
-            checklist = new WarframeChecklist();
-        });
-
-        // Handle page visibility changes to update timers
-        document.addEventListener('visibilitychange', () => {
-            if (!document.hidden && checklist) {
-                checklist.updateTimers();
-            }
-        });
     </script>
 </body>
 </html>
-
-<!-- 
-WARFRAME DAILY CHECKLIST
-========================
-
-## How to Use on GitHub:
-
-1. **Fork this repository** or **download the HTML file**
-2. **Rename** the file to `index.html` if using GitHub Pages
-3. **Enable GitHub Pages** in your repository settings
-4. **Access** your checklist at: `https://yourusername.github.io/repositoryname/`
-
-## Features:
-- ✅ Daily and Weekly task tracking
-- 📊 Progress statistics with streak counter  
-- ⏰ Real-time game event timers (Daily reset, Weekly reset, Baro Ki'Teer, Eleanor)
-- 🔢 Manual counters for circuit runs and Steel Path honors
-- 🎯 Auto-completion when reaching target numbers
-- 📱 Mobile-responsive design
-- 💾 Data persistence using browser storage
-
-## Local Usage:
-Simply open this HTML file in any modern web browser. No internet connection required after initial load.
-
-## Browser Compatibility:
-- Chrome/Edge 60+
-- Firefox 55+  
-- Safari 12+
-- Mobile browsers with ES6 support
-
-## Data Storage:
-All progress is saved locally in your browser. Data persists between sessions but won't sync across devices.
-
-## Contributing:
-Feel free to submit issues and pull requests to improve this checklist for the Warframe community.
-
-Created for Tenno, by Tenno 🌟
--->
+                

@@ -519,6 +519,30 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
+        footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            line-height: 1.5;
+        }
+
+        footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: var(--secondary-color);
+        }
+
+        .impressum {
+            margin-top: 10px;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
@@ -596,6 +620,7 @@
             </div>
         </div>
         
+        <!-- Checklist Tab -->
         <div id="checklist-tab" class="tab-content active">
             <div class="quick-stats">
                 <div class="stat">
@@ -1003,6 +1028,7 @@
             </div>
         </div>
         
+        <!-- Fusion Calculator Tab -->
         <div id="fusion-tab" class="tab-content">
             <div class="fusion-container">
                 <div class="info-box">
@@ -1104,7 +1130,8 @@
                 </div>
                 
                 <div id="weapon-inputs">
-                    </div>
+                    <!-- Weapon rows will be added here dynamically -->
+                </div>
                 
                 <div class="buttons">
                     <div>
@@ -1121,6 +1148,17 @@
             </div>
         </div>
     </div>
+
+    <footer>
+        <p>This is a fan-made toolkit. Warframe and all related content are trademarks of Digital Extremes Ltd. The content on this site is not affiliated with or endorsed by Digital Extremes.</p>
+        <p>&copy; 2025 Warframe Toolkit. All rights reserved.</p>
+        <div class="impressum">
+            <h4>Impressum</h4>
+            <p><strong>Owner:</strong> [Your Name]</p>
+            <p><strong>Address:</strong> [Your Address]</p>
+            <p><strong>Contact:</strong> [Your Email Address]</p>
+        </div>
+    </footer>
 
     <script>
         // Tab switching function
@@ -1249,11 +1287,10 @@
                 const percentInput = row.querySelector('.percent-input');
                 const rankInput = row.querySelector('.rank-input');
                 
-                const weapon = weaponSelect.value;
+                const weaponValid = weaponSelect.value !== '';
                 const percent = parseFloat(percentInput.value);
                 const rank = parseInt(rankInput.value);
                 
-                const weaponValid = weapon !== '';
                 const percentValid = !isNaN(percent) && percent >= 25 && percent <= 60;
                 const rankValid = !isNaN(rank) && rank >= 30;
                 

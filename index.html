@@ -1496,12 +1496,58 @@
                 };
                 
                 this.timerInterval = null;
+                this.dailyResetDate = null;
+                this.weeklyResetDate = null;
+                this.baroNextDate = null;
+                this.eleanorNextDate = null;
+
                 this.init();
             }
 
             init() {
+                // Calculate all reset dates once on init
+                const now = new Date();
+                
+                this.dailyResetDate = new Date();
+                this.dailyResetDate.setUTCHours(24, 0, 0, 0);
+                
+                this.weeklyResetDate = new Date();
+                const daysUntilMonday = (8 - now.getUTCDay()) % 7;
+                this.weeklyResetDate.setUTCDate(now.getUTCDate() + daysUntilMonday);
+                this.weeklyResetDate.setUTCHours(0, 0, 0, 0);
+                if (daysUntilMonday === 0 && now.getUTCHours() >= 0) {
+                    this.weeklyResetDate.setUTCDate(this.weeklyResetDate.getUTCDate() + 7);
+                }
+
+                const baroRef = new Date('2025-01-17T00:00:00.000Z');
+                const daysSinceRef = Math.floor((now - baroRef) / (1000 * 60 * 60 * 24));
+                const cyclePos = daysSinceRef % 14;
+                
+                if (cyclePos < 0) {
+                    this.baroNextDate = new Date(baroRef);
+                    this.baroStatus = "Arriving";
+                } else if (cyclePos < 2) {
+                    this.baroNextDate = new Date(baroRef);
+                    this.baroNextDate.setUTCDate(baroRef.getUTCDate() + Math.floor(daysSinceRef / 14) * 14 + 2);
+                    this.baroStatus = "Leaving";
+                } else {
+                    this.baroNextDate = new Date(baroRef);
+                    this.baroNextDate.setUTCDate(baroRef.getUTCDate() + (Math.floor(daysSinceRef / 14) + 1) * 14);
+                    this.baroStatus = "Arriving";
+                }
+
+                const eleanorRef = new Date('2025-08-16T00:00:00.000Z');
+                const daysSinceEleanor = Math.floor((now - eleanorRef) / (1000 * 60 * 60 * 24));
+                this.eleanorNextDate = new Date();
+                this.eleanorNextDate.setUTCDate(now.getUTCDate() + (4 - (daysSinceEleanor % 4)) % 4);
+                this.eleanorNextDate.setUTCHours(0, 0, 0, 0);
+                
+                this.eleanorBatch = ["Batch A", "Batch B"][Math.floor(daysSinceEleanor / 4) % 2];
+
+                // Start the live update loop
                 this.updateTimers();
-                this.timerInterval = setInterval(() => this.updateTimers(), 60000);
+                this.timerInterval = setInterval(() => this.updateTimers(), 1000);
+                
                 this.bindEvents();
                 this.updateProgress();
             }
@@ -1509,68 +1555,28 @@
             updateTimers() {
                 const now = new Date();
                 
-                const dailyReset = new Date();
-                dailyReset.setUTCHours(24, 0, 0, 0);
+                document.getElementById('daily-reset').textContent = this.formatTime(this.dailyResetDate - now);
+                document.getElementById('weekly-reset').textContent = this.formatTime(this.weeklyResetDate - now);
                 
-                const weeklyReset = new Date();
-                const daysUntilMonday = (8 - now.getUTCDay()) % 7;
-                weeklyReset.setUTCDate(now.getUTCDate() + daysUntilMonday);
-                weeklyReset.setUTCHours(0, 0, 0, 0);
-                if (daysUntilMonday === 0 && now.getUTCHours() >= 0) {
-                    weeklyReset.setUTCDate(weeklyReset.getUTCDate() + 7);
-                }
-
-                const baroRef = new Date('2025-01-17T00:00:00.000Z');
-                const daysSinceRef = Math.floor((now - baroRef) / (1000 * 60 * 60 * 24));
-                const cyclePos = daysSinceRef % 14;
+                document.getElementById('baro-status').textContent = this.baroStatus;
+                document.getElementById('baro-timer').textContent = this.formatTime(this.baroNextDate - now);
                 
-                let baroNext, baroStatus;
-                if (cyclePos < 0) {
-                    baroNext = new Date(baroRef);
-                    baroStatus = "Arriving";
-                } else if (cyclePos < 2) {
-                    baroNext = new Date(baroRef);
-                    baroNext.setUTCDate(baroRef.getUTCDate() + Math.floor(daysSinceRef / 14) * 14 + 2);
-                    baroStatus = "Leaving";
-                } else {
-                    baroNext = new Date(baroRef);
-                    baroNext.setUTCDate(baroRef.getUTCDate() + (Math.floor(daysSinceRef / 14) + 1) * 14);
-                    baroStatus = "Arriving";
-                }
-
-                const eleanorRef = new Date('2025-08-16T00:00:00.000Z');
-                const daysSinceEleanor = Math.floor((now - eleanorRef) / (1000 * 60 * 60 * 24));
-                const eleanorNext = new Date();
-                eleanorNext.setUTCDate(now.getUTCDate() + (4 - (daysSinceEleanor % 4)) % 4);
-                eleanorNext.setUTCHours(0, 0, 0, 0);
-                
-                const eleanorBatch = ["Batch A", "Batch B"][Math.floor(daysSinceEleanor / 4) % 2];
-
-                this.updateTimerDisplay(dailyReset, weeklyReset, baroNext, baroStatus, eleanorNext, eleanorBatch);
-            }
-
-            updateTimerDisplay(dailyReset, weeklyReset, baroNext, baroStatus, eleanorNext, eleanorBatch) {
-                const now = new Date();
-                
-                document.getElementById('daily-reset').textContent = this.formatTime(dailyReset - now);
-                document.getElementById('weekly-reset').textContent = this.formatTime(weeklyReset - now);
-                document.getElementById('baro-status').textContent = baroStatus;
-                document.getElementById('baro-timer').textContent = this.formatTime(baroNext - now);
-                document.getElementById('eleanor-status').textContent = eleanorBatch;
-                document.getElementById('eleanor-timer').textContent = this.formatTime(eleanorNext - now);
+                document.getElementById('eleanor-status').textContent = this.eleanorBatch;
+                document.getElementById('eleanor-timer').textContent = this.formatTime(this.eleanorNextDate - now);
             }
 
             formatTime(ms) {
                 if (ms < 0) ms = 0;
                 const hours = Math.floor(ms / (1000 * 60 * 60));
                 const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((ms % (1000 * 60)) / 1000);
                 
                 if (hours >= 24) {
                     const days = Math.floor(hours / 24);
                     const remainingHours = hours % 24;
-                    return `${days}d ${remainingHours}h`;
+                    return `${days}d ${remainingHours}h ${minutes}m`;
                 }
-                return `${hours}h ${minutes}m`;
+                return `${hours}h ${minutes}m ${seconds}s`;
             }
 
             updateProgress() {

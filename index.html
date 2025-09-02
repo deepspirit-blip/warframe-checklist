@@ -279,7 +279,7 @@
         }
         
         .collapsible-inner {
-            /* Removed collapsible-inner padding */
+            padding: 15px;
         }
         
         optgroup {
@@ -1573,7 +1573,7 @@
             fusionSteps.push(`Base weapon: ${weapons[0].name} (${formatBonusType(weapons[0].bonusType)} ${weapons[0].percent}%) - keeps forma/catalyst/potato`);
             
             if (weapons.length === 2) {
-                const maxPercent = Math.max(weapons[0.percent], weapons[1].percent);
+                const maxPercent = Math.max(weapons[0].percent, weapons[1].percent);
                 const calculatedPercent = (11 * maxPercent) / 10;
                 currentPercent = Math.min(calculatedPercent, 60);
                 
@@ -1943,7 +1943,7 @@
                         const taskId = e.target.getAttribute('data-task');
                         const action = e.target.getAttribute('data-action');
                         if (taskId && action) {
-                            this.updateCounter(taskId, action === 'plus' => 1 : -1);
+                            this.updateCounter(taskId, action === 'plus' ? 1 : -1);
                         }
                     }
                 });

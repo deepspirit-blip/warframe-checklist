@@ -279,7 +279,7 @@
         }
         
         .collapsible-inner {
-            padding: 15px;
+            /* Removed collapsible-inner padding */
         }
         
         optgroup {
@@ -671,20 +671,8 @@
                     <span id="daily-reset">Loading API data...</span>
                 </div>
                 <div class="timer-item">
-                    <span class="timer-label">Cetus Cycle:</span>
-                    <span id="cetus-cycle">Loading API data...</span>
-                </div>
-                <div class="timer-item">
-                    <span class="timer-label">Vallis Cycle:</span>
-                    <span id="vallis-cycle">Loading API data...</span>
-                </div>
-                <div class="timer-item">
-                    <span class="timer-label">Cambion Cycle:</span>
-                    <span id="cambion-cycle">Loading API data...</span>
-                </div>
-                <div class="timer-item">
-                    <span class="timer-label">Nightwave:</span>
-                    <span id="nightwave-reset">Loading API data...</span>
+                    <span class="timer-label">Weekly Reset:</span>
+                    <span id="weekly-reset">Loading API data...</span>
                 </div>
                 <div class="timer-item">
                     <span class="calendar-label">Calendar Reset:</span>
@@ -1251,18 +1239,6 @@
                 return this.fetchWithCache('');
             }
 
-            async getCetusCycle() {
-                return this.fetchWithCache('cetusCycle');
-            }
-
-            async getVallisCycle() {
-                return this.fetchWithCache('vallisCycle');
-            }
-
-            async getCambionCycle() {
-                return this.fetchWithCache('cambionCycle');
-            }
-
             async getNightwave() {
                 return this.fetchWithCache('nightwave');
             }
@@ -1289,16 +1265,6 @@
                     return `${seconds}s`;
                 }
             }
-
-            formatCycle(cycleData) {
-                if (!cycleData) return 'Loading...';
-                
-                const isDay = cycleData.isDay || false;
-                const state = cycleData.state || 'Unknown';
-                const timeLeft = this.formatTime(cycleData.expiry);
-                
-                return `${state} (${timeLeft})`;
-            }
         }
 
         // Initialize API
@@ -1310,11 +1276,8 @@
                 const statusElement = document.getElementById('api-status');
                 
                 // Fetch all data in parallel
-                const [worldState, cetusCycle, vallisCycle, cambionCycle, nightwave] = await Promise.all([
+                const [worldState, nightwave] = await Promise.all([
                     warframeAPI.getWorldState(),
-                    warframeAPI.getCetusCycle(),
-                    warframeAPI.getVallisCycle(),
-                    warframeAPI.getCambionCycle(),
                     warframeAPI.getNightwave()
                 ]);
 
@@ -1325,14 +1288,9 @@
                 const dailyReset = warframeAPI.formatTime(worldState.dailyReset);
                 document.getElementById('daily-reset').textContent = dailyReset;
                 
-                // Update cycles
-                document.getElementById('cetus-cycle').textContent = warframeAPI.formatCycle(cetusCycle);
-                document.getElementById('vallis-cycle').textContent = warframeAPI.formatCycle(vallisCycle);
-                document.getElementById('cambion-cycle').textContent = warframeAPI.formatCycle(cambionCycle);
-                
-                // Update nightwave
-                const nightwaveReset = warframeAPI.formatTime(nightwave.expiry);
-                document.getElementById('nightwave-reset').textContent = nightwaveReset;
+                // Update weekly reset
+                const weeklyReset = warframeAPI.formatTime(worldState.weeklyReset);
+                document.getElementById('weekly-reset').textContent = weeklyReset;
                 
                 // Update calendar reset (every 3 days)
                 const now = new Date();
@@ -1368,7 +1326,7 @@
         const allWeapons = {
             "Kuva": [
                 "Kuva Ayanga", "Kuva Brakk", "Kuva Bramma", "Kuva Chakkhurr", "Kuva Drakgoon",
-                "Kuva Grattler", "Kuva Hek", "Kuva Hind", "Kuva Karak", "Kuza Kohm",
+                "Kuva Grattler", "Kuva Hek", "Kuva Hind", "Kuva Karak", "Kuva Kohm",
                 "Kuva Kraken", "Kuva Nukor", "Kuva Ogris", "Kuva Quartakk", "Kuva Seer",
                 "Kuva Shildeg", "Kuva Sobek", "Kuva Tonkor", "Kuva Twin Stubbas", "Kuva Zarr"
             ],
@@ -1615,7 +1573,7 @@
             fusionSteps.push(`Base weapon: ${weapons[0].name} (${formatBonusType(weapons[0].bonusType)} ${weapons[0].percent}%) - keeps forma/catalyst/potato`);
             
             if (weapons.length === 2) {
-                const maxPercent = Math.max(weapons[0].percent, weapons[1].percent);
+                const maxPercent = Math.max(weapons[0.percent], weapons[1].percent);
                 const calculatedPercent = (11 * maxPercent) / 10;
                 currentPercent = Math.min(calculatedPercent, 60);
                 
@@ -1792,6 +1750,7 @@
                 // Only update if API hasn't already
                 if (document.getElementById('daily-reset').textContent.includes('Loading API')) {
                     document.getElementById('daily-reset').textContent = this.formatTime(this.dailyResetDate - now);
+                    document.getElementById('weekly-reset').textContent = this.formatTime(this.weeklyResetDate - now);
                     document.getElementById('calendar-reset').textContent = this.formatTime(this.calendarResetDate - now);
                 }
             }
@@ -1829,7 +1788,7 @@
                 const activeWeekly = Array.from(allWeekly).filter(cb => !this.gameState.ignored[cb.id]);
                 
                 const completedDaily = activeDaily.filter(cb => cb.checked).length;
-                completedWeekly = activeWeekly.filter(cb => cb.checked).length;
+                const completedWeekly = activeWeekly.filter(cb => cb.checked).length;
                 
                 const dailyProgress = activeDaily.length > 0 ? Math.round((completedDaily / activeDaily.length) * 100) : 0;
                 const weeklyProgress = activeWeekly.length > 0 ? Math.round((completedWeekly / activeWeekly.length) * 100) : 0;
@@ -1984,7 +1943,7 @@
                         const taskId = e.target.getAttribute('data-task');
                         const action = e.target.getAttribute('data-action');
                         if (taskId && action) {
-                            this.updateCounter(taskId, action === 'plus' ? 1 : -1);
+                            this.updateCounter(taskId, action === 'plus' => 1 : -1);
                         }
                     }
                 });

@@ -23,7 +23,6 @@
             --text-color: #e0e0e0;
             --glass-bg: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(255, 255, 255, 0.1);
-            --calendar-color: #ff6b9d;
         }
 
         body {
@@ -94,20 +93,6 @@
 
         .tab-content.active {
             display: block;
-        }
-
-        .api-status {
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-        }
-
-        .status-online {
-            color: var(--success-color);
-        }
-
-        .status-offline {
-            color: var(--danger-color);
         }
 
         /* Fusion Calculator Styles */
@@ -331,11 +316,6 @@
         .timer-label {
             font-weight: bold;
             color: var(--primary-color);
-        }
-
-        .calendar-label {
-            font-weight: bold;
-            color: var(--calendar-color);
         }
 
         .section {
@@ -633,10 +613,6 @@
     <div class="container">
         <h1>🌌 WARFRAME TOOLKIT 🌌</h1>
         
-        <div class="api-status" id="api-status">
-            <span class="status-online">●</span> Fetching live data from Warframe API...
-        </div>
-        
         <div class="tab-container">
             <div class="tab-nav">
                 <button class="tab-button active" onclick="switchTab('checklist')">📋 Daily Checklist</button>
@@ -668,15 +644,11 @@
             <div class="timer-compact">
                 <div class="timer-item">
                     <span class="timer-label">Daily Reset:</span>
-                    <span id="daily-reset">Loading API data...</span>
+                    <span id="daily-reset">Loading...</span>
                 </div>
                 <div class="timer-item">
                     <span class="timer-label">Weekly Reset:</span>
-                    <span id="weekly-reset">Loading API data...</span>
-                </div>
-                <div class="timer-item">
-                    <span class="calendar-label">Calendar Reset:</span>
-                    <span id="calendar-reset">Loading API data...</span>
+                    <span id="weekly-reset">Loading...</span>
                 </div>
             </div>
 
@@ -1203,125 +1175,6 @@
             }
         }
 
-        // Warframe API Integration
-        class WarframeAPI {
-            constructor() {
-                this.baseUrl = 'https://api.warframestat.us';
-                this.platform = 'pc'; // Default platform, can be changed to 'ps4', 'xb1', 'swi'
-                this.cache = {};
-                this.cacheDuration = 60000; // 1 minute cache
-            }
-
-            async fetchWithCache(endpoint) {
-                const now = Date.now();
-                if (this.cache[endpoint] && (now - this.cache[endpoint].timestamp) < this.cacheDuration) {
-                    return this.cache[endpoint].data;
-                }
-
-                try {
-                    const response = await fetch(`${this.baseUrl}/${this.platform}/${endpoint}`);
-                    if (!response.ok) throw new Error(`API error: ${response.status}`);
-                    
-                    const data = await response.json();
-                    this.cache[endpoint] = {
-                        data: data,
-                        timestamp: now
-                    };
-                    
-                    return data;
-                } catch (error) {
-                    console.error('Error fetching from Warframe API:', error);
-                    throw error;
-                }
-            }
-
-            async getWorldState() {
-                return this.fetchWithCache('');
-            }
-
-            async getNightwave() {
-                return this.fetchWithCache('nightwave');
-            }
-
-            formatTime(timeString) {
-                if (!timeString) return 'Unknown';
-                
-                // Parse ISO time string
-                const time = new Date(timeString);
-                const now = new Date();
-                const diffMs = time - now;
-                
-                if (diffMs <= 0) return 'Now';
-                
-                const hours = Math.floor(diffMs / (1000 * 60 * 60));
-                const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
-                
-                if (hours > 0) {
-                    return `${hours}h ${minutes}m ${seconds}s`;
-                } else if (minutes > 0) {
-                    return `${minutes}m ${seconds}s`;
-                } else {
-                    return `${seconds}s`;
-                }
-            }
-        }
-
-        // Initialize API
-        const warframeAPI = new WarframeAPI();
-
-        // Update timers from API
-        async function updateAPITimers() {
-            try {
-                const statusElement = document.getElementById('api-status');
-                
-                // Fetch all data in parallel
-                const [worldState, nightwave] = await Promise.all([
-                    warframeAPI.getWorldState(),
-                    warframeAPI.getNightwave()
-                ]);
-
-                // Update status
-                statusElement.innerHTML = '<span class="status-online">●</span> Live data from Warframe API';
-                
-                // Update daily reset
-                const dailyReset = warframeAPI.formatTime(worldState.dailyReset);
-                document.getElementById('daily-reset').textContent = dailyReset;
-                
-                // Update weekly reset
-                const weeklyReset = warframeAPI.formatTime(worldState.weeklyReset);
-                document.getElementById('weekly-reset').textContent = weeklyReset;
-                
-                // Update calendar reset (every 3 days)
-                const now = new Date();
-                const startDate = new Date(Date.UTC(2024, 10, 27)); // November 27, 2024 UTC
-                const dayInMs = 24 * 60 * 60 * 1000;
-                const daysSinceStart = Math.floor((now - startDate) / dayInMs);
-                const daysUntilNextReset = 3 - (daysSinceStart % 3);
-                const nextReset = new Date(now);
-                nextReset.setUTCDate(now.getUTCDate() + daysUntilNextReset);
-                nextReset.setUTCHours(0, 0, 0, 0);
-                
-                const calendarReset = warframeAPI.formatTime(nextReset.toISOString());
-                document.getElementById('calendar-reset').textContent = calendarReset;
-                
-            } catch (error) {
-                console.error('Error updating API timers:', error);
-                document.getElementById('api-status').innerHTML = '<span class="status-offline">●</span> API offline - using fallback timers';
-                
-                // Fallback to client-side calculations if API fails
-                if (checklist) {
-                    checklist.updateTimers();
-                }
-            }
-        }
-
-        // Update API timers every 30 seconds
-        setInterval(updateAPITimers, 30000);
-        
-        // Initial update
-        updateAPITimers();
-
         // Fusion Calculator Code
         const allWeapons = {
             "Kuva": [
@@ -1642,7 +1495,6 @@
                 this.timerInterval = null;
                 this.dailyResetDate = null;
                 this.weeklyResetDate = null;
-                this.calendarResetDate = null;
 
                 this.init();
             }
@@ -1651,11 +1503,9 @@
                 // Calculate all reset dates once on init
                 const now = new Date();
                 
-                // Daily reset at 00:00 UTC
                 this.dailyResetDate = new Date();
                 this.dailyResetDate.setUTCHours(24, 0, 0, 0);
                 
-                // Weekly reset on Monday at 00:00 UTC
                 this.weeklyResetDate = new Date();
                 const daysUntilMonday = (8 - now.getUTCDay()) % 7;
                 this.weeklyResetDate.setUTCDate(now.getUTCDate() + daysUntilMonday);
@@ -1664,9 +1514,6 @@
                     this.weeklyResetDate.setUTCDate(this.weeklyResetDate.getUTCDate() + 7);
                 }
 
-                // Calendar reset every 3 days at 00:00 UTC
-                this.calendarResetDate = this.calculateNextCalendarReset();
-                
                 // Start the live update loop
                 this.updateTimers();
                 this.timerInterval = setInterval(() => this.updateTimers(), 1000);
@@ -1676,24 +1523,6 @@
                 
                 this.bindEvents();
                 this.updateProgress();
-            }
-
-            calculateNextCalendarReset() {
-                const now = new Date();
-                const startDate = new Date(Date.UTC(2024, 10, 27)); // November 27, 2024 UTC
-                const dayInMs = 24 * 60 * 60 * 1000;
-                const threeDaysInMs = 3 * dayInMs;
-                
-                // Calculate days since start
-                const daysSinceStart = Math.floor((now - startDate) / dayInMs);
-                
-                // Calculate next reset
-                const daysUntilNextReset = 3 - (daysSinceStart % 3);
-                const nextReset = new Date(now);
-                nextReset.setUTCDate(now.getUTCDate() + daysUntilNextReset);
-                nextReset.setUTCHours(0, 0, 0, 0);
-                
-                return nextReset;
             }
 
             loadSavedState() {
@@ -1747,27 +1576,12 @@
             updateTimers() {
                 const now = new Date();
                 
-                // Only update if API hasn't already
-                if (document.getElementById('daily-reset').textContent.includes('Loading API')) {
-                    document.getElementById('daily-reset').textContent = this.formatTime(this.dailyResetDate - now);
-                    document.getElementById('weekly-reset').textContent = this.formatTime(this.weeklyResetDate - now);
-                    document.getElementById('calendar-reset').textContent = this.formatTime(this.calendarResetDate - now);
-                }
+                document.getElementById('daily-reset').textContent = this.formatTime(this.dailyResetDate - now);
+                document.getElementById('weekly-reset').textContent = this.formatTime(this.weeklyResetDate - now);
             }
 
             formatTime(ms) {
-                if (ms < 0) {
-                    // Reset the timer if it's expired
-                    if (ms === this.dailyResetDate - new Date()) {
-                        this.dailyResetDate.setUTCDate(this.dailyResetDate.getUTCDate() + 1);
-                    } else if (ms === this.weeklyResetDate - new Date()) {
-                        this.weeklyResetDate.setUTCDate(this.weeklyResetDate.getUTCDate() + 7);
-                    } else if (ms === this.calendarResetDate - new Date()) {
-                        this.calendarResetDate = this.calculateNextCalendarReset();
-                    }
-                    ms = 0;
-                }
-                
+                if (ms < 0) ms = 0;
                 const hours = Math.floor(ms / (1000 * 60 * 60));
                 const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((ms % (1000 * 60)) / 1000);

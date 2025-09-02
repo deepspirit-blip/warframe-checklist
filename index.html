@@ -1743,6 +1743,7 @@
                     if (e.target.classList.contains('task-checkbox')) {
                         this.gameState.tasks[e.target.id] = e.target.checked;
                         this.updateTaskAppearance(e.target);
+                        this.saveToLocalStorage();
                         this.updateProgress();
                     }
                 });

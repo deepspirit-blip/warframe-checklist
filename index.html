@@ -988,7 +988,7 @@
                         </div>
                         <div class="weekly-task-item">
                             <input type="checkbox" class="task-checkbox" id="netracells">
-                            <label for="netracells" class="task-label">Netracells (5x)</label>
+                            <label for="netracells" class="task-label">Netracells (x1)</label>
                             <div class="task-actions">
                                 <button class="ignore-btn" data-task="netracells">✕</button>
                             </div>
@@ -997,6 +997,11 @@
                             <input type="checkbox" class="task-checkbox" id="calendar">
                             <label for="calendar" class="task-label">Calendar</label>
                             <div class="task-actions">
+                                <div class="counter">
+                                    <button class="counter-btn" data-task="calendar" data-action="minus">-</button>
+                                    <span id="calendar-count">0</span>/3
+                                    <button class="counter-btn" data-task="calendar" data-action="plus">+</button>
+                                </div>
                                 <button class="ignore-btn" data-task="calendar">✕</button>
                             </div>
                         </div>
@@ -1490,7 +1495,7 @@
                 this.gameState = {
                     tasks: {},
                     ignored: {},
-                    counters: { duviri: 0, sp: 0, spTeshin: 0 },
+                    counters: { duviri: 0, sp: 0, spTeshin: 0, calendar: 0 },
                     streak: parseInt(sessionStorage.getItem('warframe-streak') || '0'),
                     lastCompleteDate: sessionStorage.getItem('warframe-last-complete')
                 };
@@ -1647,7 +1652,8 @@
                 const counters = {
                     'duviri-circuit': { key: 'duviri', max: 10, element: 'duviri-count' },
                     'sp-circuit': { key: 'sp', max: 10, element: 'sp-count' },
-                    'steel-path-teshin': { key: 'spTeshin', max: 25, element: 'sp-teshin-count' }
+                    'steel-path-teshin': { key: 'spTeshin', max: 25, element: 'sp-teshin-count' },
+                    'calendar': { key: 'calendar', max: 3, element: 'calendar-count' }
                 };
                 
                 const counter = counters[taskId];
@@ -1693,7 +1699,7 @@
                 if (confirm('Reset all tasks? This cannot be undone.')) {
                     this.gameState.tasks = {};
                     this.gameState.ignored = {};
-                    this.gameState.counters = { duviri: 0, sp: 0, spTeshin: 0 };
+                    this.gameState.counters = { duviri: 0, sp: 0, spTeshin: 0, calendar: 0 };
                     
                     document.querySelectorAll('.task-checkbox').forEach(cb => {
                         cb.checked = false;
@@ -1705,7 +1711,7 @@
                         }
                     });
                     
-                    ['duviri-count', 'sp-count', 'sp-teshin-count'].forEach(id => {
+                    ['duviri-count', 'sp-count', 'sp-teshin-count', 'calendar-count'].forEach(id => {
                         const element = document.getElementById(id);
                         if (element) element.textContent = '0';
                     });
